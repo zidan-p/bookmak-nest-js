@@ -14,20 +14,16 @@ export class AuthController{
     private authService: AuthService
   ){}
 
-  // decarator to define what method to handle and what route.
-  @Post("signin") // :POST /auth/signin
+  // :POST /auth/signin
+  @Post("signin") 
   signin(){
-    // nestjs automatically set that datatype in header coresponding with the return type
-    // so the datatype below will be plain text
-    // return "I am signin"; 
-
-    // it will be object json
-    return {msg: "hello i'm signin"}
+    return this.authService.signin();
   }
 
-  @Post("signout") // :POST /auth/signout
+  // :POST /auth/signout
+  @Post("signout") 
   signout(){
-    return "I am signout";
+    return this.authService.signout();
   }
 
 }
