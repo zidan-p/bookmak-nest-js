@@ -1,5 +1,6 @@
 import { Controller, Post } from "@nestjs/common";
 import { AuthService } from "./auth.service";
+import { resolve } from "node:path";
 
 
 
@@ -20,10 +21,10 @@ export class AuthController{
     return this.authService.signin();
   }
 
-  // :POST /auth/signout
-  @Post("signout") 
-  signout(){
-    return this.authService.signout();
+  // :POST /auth/signup
+  @Post("signup") 
+  signup(){
+    return this.authService.signup();
   }
 
 }
