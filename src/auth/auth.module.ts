@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common/decorators";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { JwtModule } from "@nestjs/jwt";
+import { JwtStrategy } from "./strategy";
 
 
 
@@ -16,7 +17,7 @@ import { JwtModule } from "@nestjs/jwt";
   // can inject from one to another without afraid how it will be injected.
   // nestjs will handle that injection
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy],
   imports: [JwtModule.register({})]
 })
 export class authModule {}
