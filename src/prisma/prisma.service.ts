@@ -10,7 +10,7 @@ export class PrismaService extends PrismaClient{
         db: {
           // use path resolve to get root directory.
           // __dirname will return dir where compiled app run (/dist)
-          url : `File:${resolve("./prisma/dev.db")}`
+          url : `file:${resolve("./prisma/dev.db")}`
         }
       }
     });
