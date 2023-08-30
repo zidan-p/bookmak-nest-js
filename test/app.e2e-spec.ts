@@ -19,10 +19,12 @@ describe("App e2e", () => {
       })
     )
 
-    app.init();
+    await app.init();
   })
 
-  afterAll(() => app.close())
+  afterAll(() => {
+    app.close();
+  })
 
   it.todo("should pass")
 })
