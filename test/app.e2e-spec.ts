@@ -146,7 +146,22 @@ describe("App e2e", () => {
       })
     });
 
-    describe('Edit User', () => {});
+    const editUserDto = {
+      email: "zidancahhil@fmail.com",
+      lastName: "rahman"
+    }
+
+    describe('Edit User', () => {
+      return pactum
+        .spec()
+        .withHeaders({
+          // pactum special syntaxt v~~~~~~~~~~~~~~v to get stored data
+          Authorization : "Bearer $S{userAccessToken}"
+        })
+        .patch("/user")
+        .withBody(editUserDto)
+        .expectStatus(200)
+    });
   });
 
   describe('Bookmark', () => {
