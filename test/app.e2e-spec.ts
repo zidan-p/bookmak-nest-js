@@ -5,6 +5,7 @@ import { AppModule } from '../src/app.module'
 import { INestApplication, ValidationPipe } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDto } from 'src/auth/dto';
+import { CreateBookmarkDto, EditBookmarkDto } from 'src/bookmark/dto';
 
 
 
@@ -165,12 +166,116 @@ describe("App e2e", () => {
   });
 
   describe('Bookmark', () => {
-    describe("Create Bookmark", () => {});
+    describe("Get empty bookmark", () => {
+      it("Should get empty array as body", () => {
+        return pactum
+        .spec()
+        .withHeaders({
+          // pactum special syntaxt v~~~~~~~~~~~~~~v to get stored data
+          Authorization : "Bearer $S{userAccessToken}"
+        })
+        .get("/bookmark")
+        .expectStatus(200)
+        .expectBody([])
+      })
+    })
 
-    describe('Get Bookmarks', ()=>{});
-    describe('Get Bookmark by id', ()=>{});
-    describe('Edit Bookmark by id', ()=>{});
-    describe('Delete Bookmark by id', ()=>{});
+    describe("Create Bookmark", () => {
+      const dto: CreateBookmarkDto = {
+        link: "https://localhost.com",
+        title: "ini adalah bookmark",
+        description: "bookmark saya"
+      }
+      it("Should create bookmark", () => {
+        return pactum
+        .spec()
+        .withHeaders({
+          // pactum special syntaxt v~~~~~~~~~~~~~~v to get stored data
+          Authorization : "Bearer $S{userAccessToken}"
+        })
+        .withBody(dto)
+        .post("/bookmark")
+        .expectStatus(201)
+        .stores("bookmarkId", "id");
+      })
+    });
+
+    describe('Get Bookmarks', ()=>{
+      it("Should get array with lengt 1", () => {
+        return pactum
+        .spec()
+        .withHeaders({
+          // pactum special syntaxt v~~~~~~~~~~~~~~v to get stored data
+          Authorization : "Bearer $S{userAccessToken}"
+        })
+        .get("/bookmark")
+        .expectStatus(200)
+        .expectJsonLength(1)
+      })
+    });
+    describe('Get Bookmark by id', ()=>{
+      it("Should get Bookmark by id", () => {
+        return pactum
+        .spec()
+        .withHeaders({
+          // pactum special syntaxt v~~~~~~~~~~~~~~v to get stored data
+          Authorization : "Bearer $S{userAccessToken}"
+        })
+        .get("/bookmark/{id}")
+        // here this is        v~~~~~~~~~~~~v
+        .withPathParams("id", "$S{bookmarkId}")
+        .expectStatus(200)
+      })
+    });
+
+    describe('Edit Bookmark by id', ()=>{
+      const dto: EditBookmarkDto = {
+        link: "https://localhost.com",
+        title: "ini adalah bookmark",
+        description: "bookmark saya terupdate"
+      }
+      it("Should update Bookmark by id", () => {
+        return pactum
+        .spec()
+        .withHeaders({
+          // pactum special syntaxt v~~~~~~~~~~~~~~v to get stored data
+          Authorization : "Bearer $S{userAccessToken}"
+        })
+        .withBody(dto)
+        .patch("/bookmark/{id}")
+        // here this is        v~~~~~~~~~~~~v
+        .withPathParams("id", "$S{bookmarkId}")
+        .expectStatus(200)
+      })
+    });
+
+    describe('Delete Bookmark by id', ()=>{
+      it("Should delete Bookmark by id", () => {
+        return pactum
+        .spec()
+        .withHeaders({
+          // pactum special syntaxt v~~~~~~~~~~~~~~v to get stored data
+          Authorization : "Bearer $S{userAccessToken}"
+        })
+        .delete("/bookmark/{id}")
+        // here this is        v~~~~~~~~~~~~v
+        .withPathParams("id", "$S{bookmarkId}")
+        .expectStatus(200)
+      })
+    });
   });
 
+  describe("Get empty bookmark", () => {
+    it("Should get empty array as body", () => {
+      return pactum
+      .spec()
+      .withHeaders({
+        // pactum special syntaxt v~~~~~~~~~~~~~~v to get stored data
+        Authorization : "Bearer $S{userAccessToken}"
+      })
+      .get("/bookmark")
+      .expectStatus(200)
+      .expectJsonLength(0)
+    })
+  })
 })
